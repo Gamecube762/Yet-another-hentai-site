@@ -53,10 +53,20 @@ class VideoDetailSerializerView(APIView):
         serializer = VideoDetailSerializer(queryset)
         return Response(serializer.data)
 
-class VideoSeriesSerializerView(APIView):
+class VideoNameSeriesSerializerView(APIView):
     def get(self, request, name, pk, format=None):
         try:
             queryset = Series.objects.get(series_name=name.title()).videos.get(episode=pk)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = VideoDetailSerializer(queryset)
+        return Response(serializer.data)
+
+class VideoIdSeriesSerializerView(APIView):
+    def get(self, request, seriespk, videopk, format=None):
+        try:
+            queryset = Series.objects.get(id=seriespk).videos.get(episode=videopk)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
